@@ -25,7 +25,7 @@ else:
 import numpy as np
 import torch
 from torch_ema import ExponentialMovingAverage
-
+from tqdm import tqdm
 from nequip.data import DataLoader, AtomicData, AtomicDataDict, AtomicDataset
 from nequip.utils import (
     Output,

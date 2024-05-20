@@ -15,7 +15,7 @@ from .config import Config
 from .output import Output
 from .modules import find_first_of_type
 from .misc import dtype_from_name
-
+from ._global_options import _set_global_options
 __all__ = [
     instantiate_from_cls_name,
     instantiate,
@@ -30,4 +30,5 @@ __all__ = [
     Output,
     find_first_of_type,
     dtype_from_name,
+    _set_global_options,
 ]

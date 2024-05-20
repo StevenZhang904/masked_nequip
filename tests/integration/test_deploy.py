@@ -13,7 +13,7 @@ from nequip.data import AtomicDataDict, AtomicData, dataset_from_config
 from nequip.utils import Config
 from nequip.scripts import deploy
 from nequip.train import Trainer
-from nequip.ase import NequIPCalculator
+from nequip.ase_test import NequIPCalculator
 
 
 @pytest.mark.parametrize(

@@ -360,7 +360,7 @@ class AtomicData(Data):
         Returns:
             A ``AtomicData``.
         """
-        from nequip.ase import NequIPCalculator
+        from nequip.ase_test import NequIPCalculator
 
         assert "pos" not in kwargs
 

@@ -55,7 +55,10 @@ default_config = dict(
 
 
 def main(args=None, running_as_script: bool = True):
-    config = parse_command_line(args)
+    # config = Config.from_file("/home/stevenzhang/masked_nequip/configs/water-cheng-n10-l1.yaml", defaults=default_config)
+    config = Config.from_file("/home/stevenzhang/masked_nequip/configs/water-l1.yaml", defaults=default_config)
+
+    # config = parse_command_line(args)
 
     if running_as_script:
         set_up_script_logger(config.get("log", None), config.verbose)
@@ -143,9 +146,9 @@ def fresh_start(config):
     # what is this
     # to update wandb data?
     config.update(trainer.params)
-
     # = Load the dataset =
     dataset = dataset_from_config(config, prefix="dataset")
+    print("*" * 100)
     logging.info(f"Successfully loaded the data set of type {dataset}...")
     try:
         validation_dataset = dataset_from_config(config, prefix="validation_dataset")
