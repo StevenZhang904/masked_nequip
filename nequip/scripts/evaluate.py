@@ -120,14 +120,20 @@ def main(args=None, running_as_script: bool = True):
     )
     # Something has to be provided
     # See https://stackoverflow.com/questions/22368458/how-to-make-argparse-logging.debug-usage-when-no-option-is-given-to-the-code
-    if len(sys.argv) == 1:
-        parser.print_help()
-        parser.exit()
+    ### TODO: remove comment if evaluated has been fixed
+    # if len(sys.argv) == 1:
+    #     parser.print_help()
+    #     parser.exit()
     # Parse the args
+        
+    ### TODO: remove this hard coded train dir
     args = parser.parse_args(args=args)
-
+    args.train_dir = Path("/home/stevenzhang/masked_nequip/water-n10-l1-fixedtest-root/water-n10-l1-fixedtest-run_name")
+    args.dataset_config = Path("/home/stevenzhang/masked_nequip/configs/water-mdsim-test.yaml")
     # Do the defaults:
     dataset_is_from_training: bool = False
+
+    
     if args.train_dir:
         if args.dataset_config is None:
             args.dataset_config = args.train_dir / "config.yaml"
