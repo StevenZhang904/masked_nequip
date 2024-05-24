@@ -5,9 +5,10 @@
 # process contains processed data sets
 # if 'root'/'run_name' exists, 'root'/'run_name'_'year'-'month'-'day'-'hour'-'min'-'s' will be used instead.
 root: water-n10-l1-fixedtest-root
-run_name: water-n10-l1-fixedtest-run_name
+run_name: water-n10-l1-fixedtest-evaluate
 workdir: water-n10-l1-fixedtest-workdir
 
+device: cuda:0
 seed: 123                                                                         # model seed
 dataset_seed: 456                                                                 # data set seed
 append: true                                                                      # set true if a restarted run should append to the previous log file
@@ -51,7 +52,7 @@ use_sc: true                                                                    
 # all arrays are expected to have the shape of (nframe, natom, ?) except the fixed fields
 # note that if your data set uses pbc, you need to also pass an array that maps to the nequip "pbc" key
 dataset: npz                                                                       # type of data set, can be npz or ase
-dataset_file_name: /home/stevenzhang/masked_nequip/data/forces_are_not_enough/1k/test/nequip_npz.npz                   # path to data set file
+dataset_file_name: /home/stevenzh/masked_nequip/data/forces_are_not_enough/1k/test/nequip_npz.npz                   # path to data set file
 key_mapping:
   atom_types: atomic_numbers                                                          # atomic species, integers
   energy: total_energy                                                                  # total potential eneriges to train to

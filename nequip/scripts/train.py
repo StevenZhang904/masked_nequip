@@ -56,7 +56,7 @@ default_config = dict(
 
 def main(args=None, running_as_script: bool = True):
     # config = Config.from_file("/home/stevenzhang/masked_nequip/configs/water-cheng-n10-l1.yaml", defaults=default_config)
-    config = Config.from_file("/home/stevenzh/masked_nequip/configs/water-mdsim.yaml", defaults=default_config)
+    config = Config.from_file("/home/stevenzh/masked_nequip/configs/water-mdsim-temp.yaml", defaults=default_config)
 
     # config = parse_command_line(args)
 
@@ -69,11 +69,12 @@ def main(args=None, running_as_script: bool = True):
             f"Training instance exists at {config.root}/{config.run_name}; "
             "either set append to True or use a different root or runname"
         )
-
     # for fresh new train
     if not found_restart_file:
+        print("Fresh_starting the training ******************")
         trainer = fresh_start(config)
     else:
+        print("Restarting the training ******************")
         trainer = restart(config)
 
     # Train
@@ -163,6 +164,7 @@ def fresh_start(config):
     trainer.set_dataset(dataset, validation_dataset)
 
     # = Build model =
+    logging.info("Starting to build the network...")
     final_model = model_from_config(
         config=config, initialize=True, dataset=trainer.dataset_train
     )

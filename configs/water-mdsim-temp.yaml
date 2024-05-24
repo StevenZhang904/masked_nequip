@@ -5,13 +5,13 @@
 # process contains processed data sets
 # if 'root'/'run_name' exists, 'root'/'run_name'_'year'-'month'-'day'-'hour'-'min'-'s' will be used instead.
 root: water-n10-l1-fixedtest-root
-run_name: water-n10-l1-fixedtest-lambda-1
+run_name: water-n10-l1-fixedtest-lambda-1-temp
 workdir: water-n10-l1-fixedtest-workdir
 
-device: cuda:1
+device: cuda:0
 seed: 123                                                                         # model seed
 dataset_seed: 456                                                                 # data set seed
-append: true                                                                      # set true if a restarted run should append to the previous log file
+append: false                                                                      # set true if a restarted run should append to the previous log file
 default_dtype: float64                                                            # type of float to use, e.g. float32 and float64
 
 # network
@@ -73,7 +73,7 @@ chemical_symbols:
   - O
 
 # logging
-wandb: True # we recommend using wandb for logging
+wandb: false # we recommend using wandb for logging
 wandb_project: nequip-paper-results-water-cheng-fixedtest                                                # project name used in wandb
 
 verbose: info                                                                      # the same as python logging, e.g. warning, info, debug, error; case insensitive

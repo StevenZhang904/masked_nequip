@@ -686,7 +686,6 @@ class Trainer:
             config = Config.from_dict(config_dictionary)
         else:
             config = Config.from_file(traindir + "/config.yaml")
-
         model = model_from_config(
             config=config,
             initialize=False,
