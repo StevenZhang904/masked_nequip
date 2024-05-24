@@ -56,7 +56,7 @@ default_config = dict(
 
 def main(args=None, running_as_script: bool = True):
     # config = Config.from_file("/home/stevenzhang/masked_nequip/configs/water-cheng-n10-l1.yaml", defaults=default_config)
-    config = Config.from_file("/home/stevenzhang/masked_nequip/configs/water-l1.yaml", defaults=default_config)
+    config = Config.from_file("/home/stevenzh/masked_nequip/configs/water-mdsim.yaml", defaults=default_config)
 
     # config = parse_command_line(args)
 

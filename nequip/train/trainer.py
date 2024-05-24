@@ -261,7 +261,7 @@ class Trainer:
         self._initialized = False
         self.cumulative_wall = 0
         logging.debug("* Initialize Trainer")
-
+        print("Device = ", device, "*****************************")
         # store all init arguments
         self.model = model
 

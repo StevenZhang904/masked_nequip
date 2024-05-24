@@ -76,7 +76,7 @@ def main(args=None, running_as_script: bool = True):
         "--batch-size",
         help="Batch size to use. Larger is usually faster on GPU. If you run out of memory, lower this. You can also try to raise this for faster evaluation. Default: 50.",
         type=int,
-        default=50,
+        default=8,
     )
     parser.add_argument(
         "--repeat",
@@ -128,8 +128,11 @@ def main(args=None, running_as_script: bool = True):
         
     ### TODO: remove this hard coded train dir
     args = parser.parse_args(args=args)
-    args.train_dir = Path("/home/stevenzhang/masked_nequip/water-n10-l1-fixedtest-root/water-n10-l1-fixedtest-run_name")
-    args.dataset_config = Path("/home/stevenzhang/masked_nequip/configs/water-mdsim-test.yaml")
+    # args.train_dir = Path("/home/stevenzh/masked_nequip/water-n10-l1-fixedtest-root/water-n10-l1-fixedtest-lambda-1")
+    args.model = Path("/home/stevenzh/masked_nequip/water-n10-l1-fixedtest-root/water-n10-l1-fixedtest-lambda-1/best_model.pth")
+    args.dataset_config = Path("/home/stevenzh/masked_nequip/configs/water-mdsim-test.yaml")
+    args.metrics_config = Path("/home/stevenzh/masked_nequip/configs/test_metric_config.yaml")
+    args.log = Path("/home/stevenzh/masked_nequip/eval_log.out")
     # Do the defaults:
     dataset_is_from_training: bool = False
 
@@ -415,7 +418,8 @@ def main(args=None, running_as_script: bool = True):
 
         prog.close()
         if do_metrics:
-            display_bar.close()
+            # display_bar.close()
+            pass
 
     if do_metrics:
         logger.info("\n--- Final result: ---")
