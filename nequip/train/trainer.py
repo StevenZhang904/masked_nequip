@@ -43,7 +43,7 @@ from nequip.utils import (
 from nequip.utils.versions import check_code_version
 from nequip.model import model_from_config
 
-from .loss import Loss, LossStat
+from .loss import Loss, LossStat, Cos_Sim_Loss
 from .metrics import Metrics
 from ._key import ABBREV, LOSS_KEY, TRAIN, VALIDATION
 from .early_stopping import EarlyStopping
@@ -256,6 +256,7 @@ class Trainer:
         save_ema_checkpoint_freq: int = -1,
         report_init_validation: bool = True,
         verbose="INFO",
+        pretrain: bool = False,
         **kwargs,
     ):
         self._initialized = False
@@ -317,13 +318,20 @@ class Trainer:
         self.best_metrics = float("inf")
         self.best_epoch = 0
         self.iepoch = -1 if self.report_init_validation else 0
-
-        self.loss, _ = instantiate(
-            builder=Loss,
-            prefix="loss",
-            positional_args=dict(coeffs=self.loss_coeffs),
-            all_args=self.kwargs,
-        )
+        if not self.pretrain:
+            self.loss, _ = instantiate(
+                builder=Loss,
+                prefix="loss",
+                positional_args=dict(coeffs=self.loss_coeffs),
+                all_args=self.kwargs,
+            )
+        else: ### NOTE: Pretrain Loss
+            self.loss, _ = instantiate(
+                builder=Cos_Sim_Loss,
+                prefix="loss",
+                positional_args=dict(coeffs=self.loss_coeffs),
+                all_args=self.kwargs,
+            )            
         self.loss_stat = LossStat(self.loss)
 
         # what do we train on?

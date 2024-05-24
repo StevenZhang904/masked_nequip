@@ -10,7 +10,7 @@ from torch_runstats import RunningStats, Reduction
 
 class Loss:
     """
-    assemble loss function based on key(s) and coefficient(s)
+    assemble ***MSE*** loss function based on key(s) and coefficient(s)
 
     Args:
         coeffs (dict, str): keys with coefficient and loss function name
@@ -30,7 +30,7 @@ class Loss:
 
     The loss function can be a loss class name that is exactly the same (case sensitive) to the ones defined in torch.nn.
     It can also be a user define class type that
-        - takes "reduction=none" as init argument
+        - takes "reduction=none" as init argument ### NOTE: this is not true for Cosine Similarity Loss used in mask pretraining. See  /home/stevenzhang/masked_nequip/nequip/train/_loss.py, line number: 37.
         - uses prediction tensor and reference tensor for its call functions,
         - outputs a vector with the same shape as pred/ref
 
@@ -112,6 +112,72 @@ class Loss:
 
         return loss, contrib
 
+
+class Cos_Sim_Loss:
+    """
+    assemble Cosine Similarity loss function based on key(s) and coefficient(s)
+
+    Args:
+        coeffs (dict, str): keys with coefficient and loss function name
+
+    Example input dictionaries
+
+    ```python
+    'disps'
+    ```
+
+    The loss function can be a loss class name that is exactly the same (case sensitive) to the ones defined in torch.nn.
+    It can also be a user define class type that
+        - takes "reduction=none" as init argument ### NOTE: this is not true for Cosine Similarity Loss used in mask pretraining. See  /home/stevenzhang/masked_nequip/nequip/train/_loss.py, line number: 37.
+        - uses prediction tensor and reference tensor for its call functions,
+        - outputs a vector with the same shape as pred/ref
+
+    """
+
+    def __init__(
+        self,
+        coeffs: Union[dict, str, List[str]],
+        coeff_schedule: str = "constant",
+    ):
+
+        self.coeff_schedule = coeff_schedule
+        self.coeffs = {}
+        self.funcs = {}
+        self.keys = []
+
+        cos_similarity_loss = find_loss_function("CosineSimilarity", {}) ### NOTE: Useful for mask pretraining
+        
+
+        if isinstance(coeffs, str):
+            if coeffs != "disp":
+                raise NotImplementedError(
+                    f"loss_coeffs can only be 'disps'. got {coeffs}"
+                )
+            self.coeffs[coeffs] = 1.0
+            self.funcs[coeffs] = cos_similarity_loss
+        else:
+            raise NotImplementedError(
+                f"loss_coeffs can only be 'disps', which is a string. got {coeffs}"
+            )
+        for key, coeff in self.coeffs.items():
+            self.coeffs[key] = torch.as_tensor(coeff, dtype=torch.get_default_dtype())
+            self.keys += [key]
+
+    def __call__(self, pred: dict, ref: dict):
+
+        loss = 0.0
+        contrib = {}
+        for key in self.coeffs:
+            _loss = self.funcs[key](
+                pred=pred,
+                ref=ref,
+                key=key,
+                mean=True,
+            )
+            contrib[key] = _loss
+            loss = loss + self.coeffs[key] * _loss
+
+        return loss, contrib
 
 class LossStat:
     """

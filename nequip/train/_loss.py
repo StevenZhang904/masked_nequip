@@ -6,6 +6,13 @@ from torch_runstats.scatter import scatter, scatter_mean
 
 from nequip.data import AtomicDataDict
 from nequip.utils import instantiate_from_cls_name
+import inspect
+
+def get_current_location():
+    frame = inspect.currentframe()
+    filename = frame.f_back.f_code.co_filename
+    line_number = frame.f_back.f_lineno
+    return filename, line_number
 
 
 class SimpleLoss:
@@ -26,16 +33,30 @@ class SimpleLoss:
 
     def __init__(self, func_name: str, params: dict = {}):
         self.ignore_nan = params.get("ignore_nan", False)
-        func, _ = instantiate_from_cls_name(
-            torch.nn,
-            class_name=func_name,
-            prefix="",
-            positional_args=dict(reduction="none"),
-            optional_args=params,
-            all_args={},
-        )
+        if func_name == "CosineSimilarity":
+            filename, line_number = get_current_location()  
+            print("Initializing Cosine Similarity Loss, current entry point is at", f"Current file: {filename}, line number: {line_number}")
+            func, _ = instantiate_from_cls_name(
+                torch.nn,
+                class_name=func_name,
+                prefix="",
+                positional_args=dict(),
+                optional_args=params,
+                all_args={},
+            )
+            
+        else:
+            func, _ = instantiate_from_cls_name(
+                torch.nn,
+                class_name=func_name,
+                prefix="",
+                positional_args=dict(reduction="none"),
+                optional_args=params,
+                all_args={},
+            )
         self.func_name = func_name
         self.func = func
+        print(self.func_name, self.func)
 
     def __call__(
         self,
@@ -185,3 +206,9 @@ def find_loss_function(name: str, params):
         return name
     else:
         raise NotImplementedError(f"{name} Loss is not implemented")
+
+
+
+if __name__ == "__main__":
+    find_loss_function("PerSpeciesMSELoss", {})
+    find_loss_function("PerSpeciesCosineSimilarity", {})

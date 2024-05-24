@@ -9,6 +9,7 @@ class TrainerWandB(Trainer):
     def end_of_epoch_log(self):
         Trainer.end_of_epoch_log(self)
         wandb.log(self.mae_dict)
+        ### TODO: examine if should log more things
 
     def init(self):
         super().init()

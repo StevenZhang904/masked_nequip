@@ -116,7 +116,7 @@ def transform_data(mode, data_path, output_path, masking_ratio, cell_size = 12.4
 
 if __name__ == '__main__':
     ### Using relative path, cd to the data/forces_are_not_enough/ directory
-    transform_data(mode='train', data_path='1k/train/nequip_npz.npz', output_path='1k_masked', masking_ratio=0.1)
-    # transform_data(mode='val', data_path='1k/val/nequip_npz.npz', output_path='1k_masked', masking_ratio=0.1)
+    transform_data(mode='train', data_path='1k/train/nequip_npz.npz', output_path='1k_masked', masking_ratio=0.5)
+    transform_data(mode='val', data_path='1k/val/nequip_npz.npz', output_path='1k_masked', masking_ratio=0.5)
     # transform_data(mode='test', data_path='1k/test/nequip_npz.npz', output_path='1k_masked', masking_ratio=0.1)
     
